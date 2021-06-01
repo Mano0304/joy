@@ -25,6 +25,7 @@
           <span class="text-decoration-underline fs-14">Delete</span>
         </v-btn>
       </v-layout>
+      <modal-delete :modal-delete="modalDelete" @close="closeModalDelete" @confirm="confirmDelete(serviceDetails.index)" />
     </v-card-title>
     <v-card-subtitle>
       <select-button :type-limousine="formData.type" @selectType="selectType" />
@@ -88,7 +89,7 @@
             />
           </v-col>
         </v-layout>
-        <v-layout class="mb-5" align-center>
+        <v-layout class="mb-3" align-center>
           <v-col cols="3" class="py-0 pl-0">
             <v-text-field
               v-model="formData.serviceClass.carType"
@@ -136,7 +137,7 @@
           </v-col>
         </v-layout>
         <v-btn
-          class="_text-transform mb-3"
+          class="_text-transform mb-3 pl-0"
           depressed
           rounded
           color="white"
@@ -379,6 +380,7 @@ export default {
     return {
       valid: true,
       itemRecipients: [],
+      modalDelete: false,
       addRemark: false,
       isLoadingForm: false,
       isLoadingTo: false,
@@ -389,6 +391,7 @@ export default {
       modalAddOn: false,
       modalServiceClass: false,
       formData: {
+        key: this.serviceDetails.key,
         type: 'transfer',
         form: '',
         to: '',
@@ -443,6 +446,7 @@ export default {
   },
   watch: {
     async searchForm (val) {
+      if (!val) { return }
       if (val.length > 150) { return }
       val = val.replaceAll(/[^a-zA-Z0-9\u0E00-\u0E7F ]/g, '')
       if (val === '') { return }
@@ -452,6 +456,7 @@ export default {
       this.isLoadingForm = false
     },
     async searchTo (val) {
+      if (!val) { return }
       if (val.length > 150) { return }
       val = val.replaceAll(/[^a-zA-Z0-9\u0E00-\u0E7F ]/g, '')
       if (val === '') { return }
@@ -462,11 +467,20 @@ export default {
     }
   },
   created () {
+    if (this.serviceDetails.formData) {
+      if (this.serviceDetails.formData.remark) {
+        this.addRemark = true
+      }
+      this.searchForm = JSON.parse(JSON.stringify(this.serviceDetails.formData.form))
+      this.searchTo = JSON.parse(JSON.stringify(this.serviceDetails.formData.to))
+      this.formData = JSON.parse(JSON.stringify(this.serviceDetails.formData))
+    }
     this.$bus.$on('changeLimousine', () => { this.changeLimousine() })
   },
   methods: {
     ...mapActions({
-      getGeoList: 'mapBox/getGeoList'
+      getGeoList: 'mapBox/getGeoList',
+      addLimousineData: 'service/addLimousineData'
     }),
     selectType (type) {
       this.formData.type = type
@@ -522,11 +536,14 @@ export default {
       this.formData.addOns = addOnList
       this.modalAddOn = false
     },
-    changeLimousine () {
+    async changeLimousine () {
       const validateList = [
         this.$refs.form.validate()
       ]
-      if (validateList.every(i => i)) { console.log(this.formData) }
+      if (validateList.every(i => i)) {
+        await this.addLimousineData(this.formData)
+        this.$router.push('details')
+      }
     },
     changeDateTime (v) {
       this.formData.dateTime = v
@@ -534,8 +551,15 @@ export default {
     changeFlightDateTime (v) {
       this.formData.flightDateTime = v
     },
-    deleteService (idx) {
+    deleteService () {
+      this.modalDelete = true
+    },
+    confirmDelete (idx) {
       this.$emit('deleteService', idx)
+      this.closeModalDelete()
+    },
+    closeModalDelete () {
+      this.modalDelete = false
     }
   }
 }

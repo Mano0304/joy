@@ -61,6 +61,9 @@ export const actions = {
   },
   deleteServiceItem ({ commit }, idx) {
     commit('DELETE_SERVICE_ITEM', idx)
+  },
+  addLimousineData ({ commit }, data) {
+    commit('ADD_LIMOUSINE_DATA', data)
   }
 }
 
@@ -90,5 +93,11 @@ export const mutations = {
   },
   DELETE_SERVICE_ITEM (state, idx) {
     state.limousineList.splice(idx - 1, 1)
+  },
+  ADD_LIMOUSINE_DATA (state, data) {
+    const service = state.limousineList.find(x => x.key === data.key)
+    const payload = { ...service, formData: data }
+    const idx = state.limousineList.findIndex(x => x.key === data.key)
+    state.limousineList.splice(idx, 1, payload)
   }
 }

@@ -10,7 +10,7 @@
       <v-container>
         <v-layout align-center justify-space-between>
           <div>
-            <v-img width="86" height="32" :src="logo" @click="to('/')" />
+            <v-img width="86" height="32" :src="logo" @click="onModal" />
           </div>
           <div>
             <v-btn
@@ -89,6 +89,11 @@
         <service-card @closeModal="closeModal" />
       </v-dialog>
     </div>
+    <modal-leave-booking
+      :modal-leave="modalLeave"
+      @close="close"
+      @confirm="confirm"
+    />
     <!-- main -->
     <v-main style="background-color: #f7f9fa">
       <nuxt />
@@ -200,7 +205,8 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      company: '',
+      company: 'Joy Technology Co.,Ltd',
+      modalLeave: false,
       modalService: false,
       logo: require('static/logo/Logo@3x.png'),
       companysList: [
@@ -255,9 +261,7 @@ export default {
     ...mapState('company', ['companyList'])
   },
   async created () {
-    if (this.$route.name === 'create') {
-      await this.getCompanyList()
-    }
+    await this.getCompanyList()
   },
   methods: {
     ...mapActions({
@@ -271,6 +275,16 @@ export default {
     },
     closeModal () {
       this.modalService = false
+    },
+    onModal () {
+      this.modalLeave = true
+    },
+    close () {
+      this.modalLeave = false
+    },
+    confirm () {
+      this.$router.push('/')
+      this.close()
     }
   }
 }
