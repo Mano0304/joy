@@ -15,6 +15,9 @@ html::-webkit-scrollbar {
 .border-error {
     border: 1px solid red !important;
 }
+._opacity-items {
+    opacity: 0.5;
+}
 /*[ FONT SIZE ]
 ///////////////////////////////////////////////////////////
 */
