@@ -38,7 +38,21 @@
           </span><br>
           <span class="font-weight-bold black--text">{{ serviceDetails.formData.dateTime }}</span>
         </v-col>
-        <v-col>
+        <v-col v-if="serviceDetails.formData.type !== 'Charter'">
+          <span class="fs-12">
+            Remark
+          </span><br>
+          <span class="font-weight-bold black--text">{{ serviceDetails.formData.remark }}</span>
+        </v-col>
+        <v-col v-else>
+          <span class="fs-12">
+            Duration
+          </span><br>
+          <span class="font-weight-bold black--text">{{ serviceDetails.formData.duration }}</span>
+        </v-col>
+      </v-layout>
+      <v-layout v-if="serviceDetails.formData.type === 'Charter'">
+        <v-col class="pl-0">
           <span class="fs-12">
             Remark
           </span><br>

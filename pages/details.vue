@@ -19,16 +19,16 @@
               Edit
             </v-btn>
           </v-layout>
-          <v-layout justify-center>
-            <limousine-details
-              v-for="limousine in limousineList"
-              :key="limousine.key"
-              :service-details="limousine"
-              class="mb-15"
-            />
-          </v-layout>
+          <limousine-details
+            v-for="limousine in limousineList"
+            :key="limousine.key"
+            :service-details="limousine"
+            class="mb-10"
+          />
         </v-col>
-        <payment-summary />
+        <div>
+          <payment-summary />
+        </div>
       </v-layout>
     </v-container>
   </div>

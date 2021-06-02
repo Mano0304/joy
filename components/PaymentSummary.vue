@@ -15,7 +15,7 @@
       <v-col class="px-0 pt-0">
         <v-layout justify-space-between class="fs-12">
           <p>Discount</p>
-          <p class="font-weight-bold" style="color: #d9b735;">
+          <p class="font-weight-bold" style="color: #d9b735">
             -฿1,678
           </p>
         </v-layout>
@@ -32,6 +32,7 @@
       <v-divider />
       <v-col class="px-0">
         <v-text-field
+          v-model="couponCode"
           label="Coupon Code"
           dense
           hide-details
@@ -39,22 +40,26 @@
         />
       </v-col>
       <v-divider />
-      <v-col class="px-0">
-        <v-select
-          label="Payment type"
-          :rules="[notEmptyField]"
-          :items="paymentType"
-          item-text="name"
-          item-value="name"
-          dense
-          hide-details
-          outlined
-        />
-      </v-col>
+      <v-form ref="form" v-model="valid" lazy-validation>
+        <v-col class="px-0">
+          <v-select
+            v-model="paymentType"
+            label="Payment type"
+            :rules="[notEmptyField]"
+            :items="paymentTypes"
+            item-text="name"
+            item-value="name"
+            dense
+            hide-details
+            outlined
+          />
+        </v-col>
+      </v-form>
       <v-col class="px-0">
         <span class="font-weight-bold black--text">Company Ref.</span>
         <span>(No required)</span>
         <v-text-field
+          v-model="companyRef"
           dense
           hide-details
           outlined
@@ -64,10 +69,20 @@
         block
         color="#000000"
         class="_text-transform white--text font-weight-bold"
+        @click="confirm"
       >
         Confirm
       </v-btn>
     </v-card-text>
+    <modal-payment
+      :modal-payment="modalPayment"
+      @confirm="nextPage"
+      @close="close"
+    />
+    <modal-house-use
+      :modal-house-use="modalHouseUse"
+      @close="closeModal"
+    />
   </v-card>
 </template>
 
@@ -75,7 +90,13 @@
 export default {
   data () {
     return {
-      paymentType: [
+      valid: false,
+      modalPayment: false,
+      modalHouseUse: false,
+      paymentType: '',
+      couponCode: '',
+      companyRef: '',
+      paymentTypes: [
         {
           id: '1',
           name: 'QR code'
@@ -94,6 +115,28 @@ export default {
   methods: {
     notEmptyField (v) {
       return !!v || 'Please enter information'
+    },
+    confirm () {
+      if (this.$refs.form.validate()) {
+        switch (this.paymentType) {
+          case 'QR code': this.modalPayment = true
+            break
+          case 'Billing': this.$router.push('complete')
+            break
+          case 'House use': this.modalHouseUse = true
+            break
+        }
+      }
+    },
+    nextPage () {
+      this.modalPayment = false
+      this.$router.push('complete')
+    },
+    close () {
+      this.modalPayment = false
+    },
+    closeModal () {
+      this.modalHouseUse = false
     }
   }
 }

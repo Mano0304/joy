@@ -3,24 +3,24 @@
     <v-btn
       rounded
       small
-      :depressed="typeLimousine !== 'transfer'"
-      :class="typeLimousine !== 'transfer' && 'shades--text text--black select-button'"
+      :depressed="typeLimousine !== 'Transfer'"
+      :class="typeLimousine !== 'Transfer' && 'shades--text text--black select-button'"
       width="160"
-      :color="typeLimousine === 'transfer' ? 'white' : ''"
+      :color="typeLimousine === 'Transfer' ? 'white' : ''"
       class="_text-transform font-weight-bold blue--text"
-      @click="selectType('transfer')"
+      @click="selectType('Transfer')"
     >
       Transfer
     </v-btn>
     <v-btn
       rounded
       small
-      :depressed="typeLimousine !== 'charter'"
-      :class="typeLimousine !== 'charter' && 'shades--text text--black select-button'"
+      :depressed="typeLimousine !== 'Charter'"
+      :class="typeLimousine !== 'Charter' && 'shades--text text--black select-button'"
       width="160"
-      :color="typeLimousine === 'charter' ? 'white' : ''"
+      :color="typeLimousine === 'Charter' ? 'white' : ''"
       class="_text-transform font-weight-bold blue--text"
-      @click="selectType('charter')"
+      @click="selectType('Charter')"
     >
       Charter
     </v-btn>

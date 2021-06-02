@@ -78,9 +78,12 @@
           </v-col>
           <v-col class="pl-0">
             <v-select
-              v-if="formData.type === 'charter'"
+              v-if="formData.type === 'Charter'"
               v-model="formData.duration"
               :disabled="onServiceClass"
+              :items="durationList"
+              item-text="name"
+              item-value="name"
               :rules="[notEmptyField]"
               outlined
               dense
@@ -392,7 +395,7 @@ export default {
       modalServiceClass: false,
       formData: {
         key: this.serviceDetails.key,
-        type: 'transfer',
+        type: 'Transfer',
         form: '',
         to: '',
         dateTime: '',
@@ -434,6 +437,77 @@ export default {
         {
           id: '6',
           label: 'Not specified'
+        }
+      ],
+      durationList: [
+        {
+          name: '2 h'
+        },
+        {
+          name: '3 h'
+        },
+        {
+          name: '4 h'
+        },
+        {
+          name: '5 h'
+        },
+        {
+          name: '6 h'
+        },
+        {
+          name: '7 h'
+        },
+        {
+          name: '8 h'
+        },
+        {
+          name: '9 h'
+        },
+        {
+          name: '10 h'
+        },
+        {
+          name: '11 h'
+        },
+        {
+          name: '12 h'
+        },
+        {
+          name: '13 h'
+        },
+        {
+          name: '14 h'
+        },
+        {
+          name: '15 h'
+        },
+        {
+          name: '16 h'
+        },
+        {
+          name: '17 h'
+        },
+        {
+          name: '18 h'
+        },
+        {
+          name: '19 h'
+        },
+        {
+          name: '20 h'
+        },
+        {
+          name: '21 h'
+        },
+        {
+          name: '22 h'
+        },
+        {
+          name: '23 h'
+        },
+        {
+          name: '24 h'
         }
       ]
     }
