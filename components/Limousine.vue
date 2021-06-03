@@ -1,14 +1,14 @@
 <template>
   <v-card>
-    <v-card-title class="justify-space-between">
+    <v-card-title class="justify-space-between mb-5">
       <v-layout align-center>
         <div>
           <v-img
-            class="_opacity-items"
-            :src="serviceDetails.icon"
+            width="50"
+            :src="serviceDetails.ASIMGUrl"
           />
         </div>
-        <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.title }}</span>
+        <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.ASCaption }}</span>
         <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.index }}</span>
       </v-layout>
       <v-layout justify-end>
@@ -25,6 +25,7 @@
           <span class="text-decoration-underline fs-14">Delete</span>
         </v-btn>
       </v-layout>
+      <modal-delete :modal-delete="modalDelete" @close="closeModalDelete" @confirm="confirmDelete(serviceDetails.index)" />
     </v-card-title>
     <v-card-subtitle>
       <select-button :type-limousine="formData.type" @selectType="selectType" />
@@ -77,9 +78,12 @@
           </v-col>
           <v-col class="pl-0">
             <v-select
-              v-if="formData.type === 'charter'"
+              v-if="formData.type === 'Charter'"
               v-model="formData.duration"
               :disabled="onServiceClass"
+              :items="durationList"
+              item-text="name"
+              item-value="name"
               :rules="[notEmptyField]"
               outlined
               dense
@@ -88,10 +92,10 @@
             />
           </v-col>
         </v-layout>
-        <v-layout class="mb-5" align-center>
+        <v-layout class="mb-3" align-center>
           <v-col cols="3" class="py-0 pl-0">
             <v-text-field
-              v-model="formData.serviceClass.carType"
+              v-model="formData.serviceClass.ASCCaption"
               :disabled="onServiceClass"
               :rules="[notEmptyField]"
               readonly
@@ -114,7 +118,7 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.carType }}</span>
+                >{{ formData.serviceClass.ASCGuideline.CarType }}</span>
               </v-col>
               <v-icon>mdi-seat</v-icon>
               <v-col class="pa-0 pl-2">
@@ -122,7 +126,7 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.seating }}</span>
+                >{{ formData.serviceClass.ASCGuideline.Seating }}</span>
               </v-col>
               <v-icon>mdi-bag-carry-on</v-icon>
               <v-col class="pa-0 pl-2">
@@ -130,13 +134,13 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.luggage }}</span>
+                >{{ formData.serviceClass.ASCGuideline.Luggage }}</span>
               </v-col>
             </v-layout>
           </v-col>
         </v-layout>
         <v-btn
-          class="_text-transform mb-3"
+          class="_text-transform mb-3 pl-0"
           depressed
           rounded
           color="white"
@@ -258,9 +262,11 @@
               v-model="formData.phone"
               label="Phone*"
               :rules="[notEmptyField, notPhoneField]"
+              mode="international"
               outlined
               hide-details
               dense
+              @input="phoneObject"
             />
           </v-col>
           <v-col cols="3" class="pl-0">
@@ -333,7 +339,14 @@
             :key="index"
             class="pa-1 px-5 tab-button mr-3"
           >
-            <span class="fs-10">{{ addOn.name }}&nbsp;฿{{ addOn.price }}<span class="blue--text">&nbsp;x{{ addOn.quantity }}</span></span>
+            <span class="fs-10">
+              {{ addOn.AACaption }}
+              &nbsp;฿{{ addOn.AAUnitPrice }}
+              <span class="blue--text">
+                &nbsp;x{{ addOn.quantity }}
+              </span>
+              &nbsp;{{ addOn.AAUnitCount }}
+            </span>
           </div>
         </v-layout>
         <modal-add-on
@@ -343,6 +356,7 @@
         />
         <modal-service-class
           :value="modalServiceClass"
+          :type="formData.type"
           @closeModal="closeModalServiceClass"
           @onSelect="onSelectServiceClass"
         />
@@ -379,6 +393,7 @@ export default {
     return {
       valid: true,
       itemRecipients: [],
+      modalDelete: false,
       addRemark: false,
       isLoadingForm: false,
       isLoadingTo: false,
@@ -389,7 +404,8 @@ export default {
       modalAddOn: false,
       modalServiceClass: false,
       formData: {
-        type: 'transfer',
+        key: this.serviceDetails.key,
+        type: 'Transfer',
         form: '',
         to: '',
         dateTime: '',
@@ -432,6 +448,77 @@ export default {
           id: '6',
           label: 'Not specified'
         }
+      ],
+      durationList: [
+        {
+          name: '2 h'
+        },
+        {
+          name: '3 h'
+        },
+        {
+          name: '4 h'
+        },
+        {
+          name: '5 h'
+        },
+        {
+          name: '6 h'
+        },
+        {
+          name: '7 h'
+        },
+        {
+          name: '8 h'
+        },
+        {
+          name: '9 h'
+        },
+        {
+          name: '10 h'
+        },
+        {
+          name: '11 h'
+        },
+        {
+          name: '12 h'
+        },
+        {
+          name: '13 h'
+        },
+        {
+          name: '14 h'
+        },
+        {
+          name: '15 h'
+        },
+        {
+          name: '16 h'
+        },
+        {
+          name: '17 h'
+        },
+        {
+          name: '18 h'
+        },
+        {
+          name: '19 h'
+        },
+        {
+          name: '20 h'
+        },
+        {
+          name: '21 h'
+        },
+        {
+          name: '22 h'
+        },
+        {
+          name: '23 h'
+        },
+        {
+          name: '24 h'
+        }
       ]
     }
   },
@@ -443,6 +530,7 @@ export default {
   },
   watch: {
     async searchForm (val) {
+      if (!val) { return }
       if (val.length > 150) { return }
       val = val.replaceAll(/[^a-zA-Z0-9\u0E00-\u0E7F ]/g, '')
       if (val === '') { return }
@@ -452,6 +540,7 @@ export default {
       this.isLoadingForm = false
     },
     async searchTo (val) {
+      if (!val) { return }
       if (val.length > 150) { return }
       val = val.replaceAll(/[^a-zA-Z0-9\u0E00-\u0E7F ]/g, '')
       if (val === '') { return }
@@ -462,14 +551,28 @@ export default {
     }
   },
   created () {
+    if (this.serviceDetails.formData) {
+      if (this.serviceDetails.formData.remark) {
+        this.addRemark = true
+      }
+      this.searchForm = JSON.parse(JSON.stringify(this.serviceDetails.formData.form))
+      this.searchTo = JSON.parse(JSON.stringify(this.serviceDetails.formData.to))
+      this.formData = JSON.parse(JSON.stringify(this.serviceDetails.formData))
+      this.itemRecipients = JSON.parse(JSON.stringify(this.serviceDetails.formData.recipients))
+    }
     this.$bus.$on('changeLimousine', () => { this.changeLimousine() })
+  },
+  beforeDestroy () {
+    this.$bus.$off('changeLimousine')
   },
   methods: {
     ...mapActions({
-      getGeoList: 'mapBox/getGeoList'
+      getGeoList: 'mapBox/getGeoList',
+      addLimousineData: 'service/addLimousineData'
     }),
     selectType (type) {
       this.formData.type = type
+      this.formData.serviceClass = {}
     },
     notEmptyField (v) {
       return !!v || 'Please enter information'
@@ -503,7 +606,7 @@ export default {
     },
     onSelectServiceClass (serviceClass) {
       this.formData.serviceClass = serviceClass
-      this.formData.totalPrice = +serviceClass.price
+      this.formData.totalPrice = serviceClass.StdPrice
       this.modalServiceClass = false
     },
     closeModalAddOn () {
@@ -522,11 +625,10 @@ export default {
       this.formData.addOns = addOnList
       this.modalAddOn = false
     },
-    changeLimousine () {
-      const validateList = [
-        this.$refs.form.validate()
-      ]
-      if (validateList.every(i => i)) { console.log(this.formData) }
+    async changeLimousine () {
+      if (!this.$refs.form.validate()) { return }
+      await this.addLimousineData(this.formData)
+      this.$router.push('details')
     },
     changeDateTime (v) {
       this.formData.dateTime = v
@@ -534,8 +636,18 @@ export default {
     changeFlightDateTime (v) {
       this.formData.flightDateTime = v
     },
-    deleteService (idx) {
+    deleteService () {
+      this.modalDelete = true
+    },
+    confirmDelete (idx) {
       this.$emit('deleteService', idx)
+      this.closeModalDelete()
+    },
+    closeModalDelete () {
+      this.modalDelete = false
+    },
+    phoneObject (text, obj) {
+      this.formData.phone = obj.number.e164
     }
   }
 }

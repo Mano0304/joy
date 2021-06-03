@@ -24,7 +24,8 @@
     "vue-tel-input-vuetify": "^1.2.16",
     "vue-wait": "^1.4.8",
     "vuetify-datetime-picker": "^2.1.1",
-    "vuetify-phone-number-input": "^1.0.0"
+    "vuetify-phone-number-input": "^1.0.0",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.0",
