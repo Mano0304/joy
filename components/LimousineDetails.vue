@@ -64,7 +64,7 @@
           <span class="fs-12">
             Service Class
           </span><br>
-          <span class="font-weight-bold black--text">{{ serviceDetails.formData.serviceClass.carType }}</span>
+          <span class="font-weight-bold black--text">{{ serviceDetails.formData.serviceClass.ASCCaption }}</span>
         </v-col>
         <v-col
           cols="6"
@@ -77,7 +77,7 @@
               <span
                 class="fs-12 font-weight-bold"
                 style="color: #d9b735;"
-              >{{ serviceDetails.formData.serviceClass.carType }}</span>
+              >{{ serviceDetails.formData.serviceClass.ASCGuideline.CarType }}</span>
             </v-col>
             <v-icon>mdi-seat</v-icon>
             <v-col class="pa-0 pl-2">
@@ -85,7 +85,7 @@
               <span
                 class="fs-12 font-weight-bold"
                 style="color: #d9b735;"
-              >{{ serviceDetails.formData.serviceClass.seating }}</span>
+              >{{ serviceDetails.formData.serviceClass.ASCGuideline.Seating }}</span>
             </v-col>
             <v-icon>mdi-bag-carry-on</v-icon>
             <v-col class="pa-0 pl-2">
@@ -93,7 +93,7 @@
               <span
                 class="fs-12 font-weight-bold"
                 style="color: #d9b735;"
-              >{{ serviceDetails.formData.serviceClass.luggage }}</span>
+              >{{ serviceDetails.formData.serviceClass.ASCGuideline.Luggage }}</span>
             </v-col>
           </v-layout>
         </v-col>
@@ -132,6 +132,7 @@
           <span class="fs-12">
             Name
           </span><br>
+          <span class="font-weight-bold black--text">{{ serviceDetails.formData.title }}.</span>
           <span class="font-weight-bold black--text">{{ serviceDetails.formData.name }}</span>
         </v-col>
         <v-col>
@@ -165,11 +166,20 @@
         Add on
       </span>
       <v-col class="pl-0">
-        <span
+        <div
           v-for="(addOn, index) in serviceDetails.formData.addOns"
           :key="index"
           class="font-weight-bold black--text mr-3"
-        >{{ addOn.name }}&nbsp;฿{{ addOn.price }}&nbsp;x{{ addOn.quantity }}</span>
+        >
+          <span>
+            {{ addOn.AACaption }}
+            &nbsp;฿{{ addOn.AAUnitPrice }}
+            <span>
+              &nbsp;x{{ addOn.quantity }}
+            </span>
+            &nbsp;{{ addOn.AAUnitCount }}
+          </span>
+        </div>
       </v-col>
     </v-card-text>
   </v-card>

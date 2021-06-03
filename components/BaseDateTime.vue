@@ -113,7 +113,8 @@ export default {
       time: '00:00',
       activeTab: 0,
       nowDate: new Date().toISOString().substr(0, 10),
-      menu: false
+      menu: false,
+      value: this.$attrs.value
     }
   },
   computed: {
@@ -124,6 +125,13 @@ export default {
     dateSelected () {
       return !this.date
     }
+  },
+  created () {
+    if (!this.$attrs.value) { return }
+    const date = this.value.slice(0, 10)
+    const newdate = date.split('/').reverse().join('-')
+    this.date = newdate
+    this.time = this.value.slice(12, 17)
   },
   methods: {
     selectDate () {

@@ -277,6 +277,7 @@ export default {
       this.modalService = false
     },
     onModal () {
+      if (this.$route.name === 'index') { return }
       this.modalLeave = true
     },
     close () {

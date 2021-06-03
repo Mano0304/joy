@@ -1,14 +1,14 @@
 <template>
   <v-card>
-    <v-card-title class="justify-space-between">
+    <v-card-title class="justify-space-between mb-5">
       <v-layout align-center>
         <div>
           <v-img
-            class="_opacity-items"
-            :src="serviceDetails.icon"
+            width="50"
+            :src="serviceDetails.ASIMGUrl"
           />
         </div>
-        <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.title }}</span>
+        <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.ASCaption }}</span>
         <span class="font-weight-bold fs-24 ml-3">{{ serviceDetails.index }}</span>
       </v-layout>
       <v-layout justify-end>
@@ -95,7 +95,7 @@
         <v-layout class="mb-3" align-center>
           <v-col cols="3" class="py-0 pl-0">
             <v-text-field
-              v-model="formData.serviceClass.carType"
+              v-model="formData.serviceClass.ASCCaption"
               :disabled="onServiceClass"
               :rules="[notEmptyField]"
               readonly
@@ -118,7 +118,7 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.carType }}</span>
+                >{{ formData.serviceClass.ASCGuideline.CarType }}</span>
               </v-col>
               <v-icon>mdi-seat</v-icon>
               <v-col class="pa-0 pl-2">
@@ -126,7 +126,7 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.seating }}</span>
+                >{{ formData.serviceClass.ASCGuideline.Seating }}</span>
               </v-col>
               <v-icon>mdi-bag-carry-on</v-icon>
               <v-col class="pa-0 pl-2">
@@ -134,7 +134,7 @@
                 <span
                   class="fs-12 font-weight-bold"
                   style="color: #d9b735;"
-                >{{ formData.serviceClass.luggage }}</span>
+                >{{ formData.serviceClass.ASCGuideline.Luggage }}</span>
               </v-col>
             </v-layout>
           </v-col>
@@ -262,9 +262,11 @@
               v-model="formData.phone"
               label="Phone*"
               :rules="[notEmptyField, notPhoneField]"
+              mode="international"
               outlined
               hide-details
               dense
+              @input="phoneObject"
             />
           </v-col>
           <v-col cols="3" class="pl-0">
@@ -337,7 +339,14 @@
             :key="index"
             class="pa-1 px-5 tab-button mr-3"
           >
-            <span class="fs-10">{{ addOn.name }}&nbsp;฿{{ addOn.price }}<span class="blue--text">&nbsp;x{{ addOn.quantity }}</span></span>
+            <span class="fs-10">
+              {{ addOn.AACaption }}
+              &nbsp;฿{{ addOn.AAUnitPrice }}
+              <span class="blue--text">
+                &nbsp;x{{ addOn.quantity }}
+              </span>
+              &nbsp;{{ addOn.AAUnitCount }}
+            </span>
           </div>
         </v-layout>
         <modal-add-on
@@ -347,6 +356,7 @@
         />
         <modal-service-class
           :value="modalServiceClass"
+          :type="formData.type"
           @closeModal="closeModalServiceClass"
           @onSelect="onSelectServiceClass"
         />
@@ -548,8 +558,12 @@ export default {
       this.searchForm = JSON.parse(JSON.stringify(this.serviceDetails.formData.form))
       this.searchTo = JSON.parse(JSON.stringify(this.serviceDetails.formData.to))
       this.formData = JSON.parse(JSON.stringify(this.serviceDetails.formData))
+      this.itemRecipients = JSON.parse(JSON.stringify(this.serviceDetails.formData.recipients))
     }
     this.$bus.$on('changeLimousine', () => { this.changeLimousine() })
+  },
+  beforeDestroy () {
+    this.$bus.$off('changeLimousine')
   },
   methods: {
     ...mapActions({
@@ -558,6 +572,7 @@ export default {
     }),
     selectType (type) {
       this.formData.type = type
+      this.formData.serviceClass = {}
     },
     notEmptyField (v) {
       return !!v || 'Please enter information'
@@ -591,7 +606,7 @@ export default {
     },
     onSelectServiceClass (serviceClass) {
       this.formData.serviceClass = serviceClass
-      this.formData.totalPrice = +serviceClass.price
+      this.formData.totalPrice = serviceClass.StdPrice
       this.modalServiceClass = false
     },
     closeModalAddOn () {
@@ -611,13 +626,9 @@ export default {
       this.modalAddOn = false
     },
     async changeLimousine () {
-      const validateList = [
-        this.$refs.form.validate()
-      ]
-      if (validateList.every(i => i)) {
-        await this.addLimousineData(this.formData)
-        this.$router.push('details')
-      }
+      if (!this.$refs.form.validate()) { return }
+      await this.addLimousineData(this.formData)
+      this.$router.push('details')
     },
     changeDateTime (v) {
       this.formData.dateTime = v
@@ -634,6 +645,9 @@ export default {
     },
     closeModalDelete () {
       this.modalDelete = false
+    },
+    phoneObject (text, obj) {
+      this.formData.phone = obj.number.e164
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mt-14" flat>
+  <v-card class="mt-14" flat width="320">
     <v-card-text>
       <p class="font-weight-bold fs-16 black--text">
         Payment summary
@@ -55,6 +55,12 @@
           />
         </v-col>
       </v-form>
+      <v-layout
+        v-if="paymentType === 'House use'"
+        justify-end
+      >
+        <span class="_pink--text font-weight-bold">House use balance : ฿2,657</span>
+      </v-layout>
       <v-col class="px-0">
         <span class="font-weight-bold black--text">Company Ref.</span>
         <span>(No required)</span>

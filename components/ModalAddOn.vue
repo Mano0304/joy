@@ -17,17 +17,17 @@
         <div v-for="(addOn, index) in addOnItems" :key="index">
           <v-layout justify-space-between>
             <v-layout align-center>
-              <div>
-                <v-img :src="addOn.image" width="60" />
+              <div class="my-3">
+                <v-img :src="addOn.AAIMGUrl" width="60" />
               </div>
-              <v-col cols="5">
+              <v-col cols="4">
                 <span class="fs-12">
-                  {{ addOn.name }}
+                  {{ addOn.AACaption }}
                 </span>
               </v-col>
               <v-col>
                 <span class="font-weight-bold black--text">
-                  ฿{{ addOn.price }}
+                  ฿{{ addOn.AAUnitPrice }}
                 </span>
               </v-col>
               <v-col cols="4">
@@ -58,6 +58,9 @@
                     </v-icon>
                   </v-btn>
                 </v-layout>
+              </v-col>
+              <v-col>
+                <span class="font-weight-bold">{{ addOn.AAUnitCount }}</span>
               </v-col>
             </v-layout>
           </v-layout>

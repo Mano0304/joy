@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400">
+  <v-card v-if="formData.serviceList.length" width="400">
     <v-card-title class="justify-center">
       <span class="font-weight-bold fs-22">Our service</span>
     </v-card-title>
@@ -8,22 +8,22 @@
     >
       <v-card
         v-for="service in formData.serviceList"
-        :key="service.index"
+        :key="service.ASIndex"
         min-height="80"
-        :style="!service.status && 'opacity: 0.3;'"
+        :style="!service.status && 'opacity: 0.8;'"
         :class="notSelect && 'border-error'"
         class="border-black elevation-0 mb-3"
         @click="selectService(service)"
       >
         <v-layout>
           <v-col cols="3">
-            <v-img :src="service.icon" />
+            <v-img :src="service.ASIMGUrl" />
           </v-col>
           <v-layout align-center>
             <v-col>
-              <span class="font-weight-bold fs-18">{{ service.title }}</span><br>
+              <span class="font-weight-bold fs-18">{{ service.ASCaption }}</span><br>
               <span class="fs-14">
-                {{ service.subTitle }}
+                {{ service.ASDesc }}
               </span>
             </v-col>
           </v-layout>
@@ -83,7 +83,7 @@ export default {
     selectService (service) {
       this.notSelect = false
       if (service.status) {
-        const index = this.formData.serviceItems.findIndex(x => x.id === service.id)
+        const index = this.formData.serviceItems.findIndex(x => x.ASIndex === service.ASIndex)
         service.status = false
         this.formData.serviceItems.splice(index, 1)
       } else {

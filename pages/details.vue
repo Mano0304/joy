@@ -39,9 +39,15 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('service', ['limousineList'])
+    ...mapState('service', ['limousineList', 'airportList', 'rentList'])
+  },
+  async created () {
+    await this.refreshPage()
   },
   methods: {
+    refreshPage () {
+      if (!this.limousineList.length && !this.airportList.length && !this.rentList.length) { this.$router.replace('/') }
+    },
     editBooking () {
       this.$router.replace('create')
     }

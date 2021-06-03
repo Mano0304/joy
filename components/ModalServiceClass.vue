@@ -15,14 +15,14 @@
       </v-card-title>
       <v-divider />
       <v-card-text>
-        <div v-for="(serviceClass, index) in serviceClassList" :key="index">
+        <div v-for="serviceClass in serviceClassList" :key="serviceClass.ASCIndex">
           <v-layout align-center>
             <div>
-              <v-img :src="serviceClass.image" width="300" />
+              <v-img :src="serviceClass.ASCIMGUrl" width="200" />
             </div>
             <v-col>
-              <span class="font-weight-bold">{{ serviceClass.carType }}</span><br>
-              <span class="font-weight-bold black--text">{{ serviceClass.details }}</span>
+              <span class="font-weight-bold">{{ serviceClass.ASCCaption }}</span><br>
+              <span class="font-weight-bold black--text">{{ serviceClass.ASCDesc }}</span>
               <v-col cols="9" style="background-color: #f5f5f5; border-radius: 5px;">
                 <v-layout>
                   <v-icon>mdi-car</v-icon>
@@ -31,7 +31,7 @@
                     <span
                       class="font-weight-bold"
                       style="color: #d9b735;"
-                    >{{ serviceClass.carType }}</span>
+                    >{{ serviceClass.ASCGuideline.CarType }}</span>
                   </v-col>
                   <v-icon>mdi-seat</v-icon>
                   <v-col class="pa-0 pl-2">
@@ -39,7 +39,7 @@
                     <span
                       class="font-weight-bold"
                       style="color: #d9b735;"
-                    >{{ serviceClass.seating }}</span>
+                    >{{ serviceClass.ASCGuideline.Seating }}</span>
                   </v-col>
                   <v-icon>mdi-bag-carry-on</v-icon>
                   <v-col class="pa-0 pl-2">
@@ -47,15 +47,15 @@
                     <span
                       class="font-weight-bold"
                       style="color: #d9b735;"
-                    >{{ serviceClass.luggage }}</span>
+                    >{{ serviceClass.ASCGuideline.Luggage }}</span>
                   </v-col>
                 </v-layout>
               </v-col>
               <v-col>
                 <v-layout justify-space-between>
                   <div>
-                    <span class="font-weight-bold black--text">฿{{ serviceClass.price }}</span><br>
-                    <span>All prices include VAT</span>
+                    <span class="font-weight-bold black--text">฿{{ serviceClass.StdPrice }}</span><br>
+                    <span>{{ serviceClass.PriceRemark }}</span>
                   </div>
                   <v-btn
                     width="140"
@@ -84,17 +84,31 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     ...mapState('serviceClass', ['serviceClassList'])
   },
+  watch: {
+    async type () {
+      if (this.type === 'Charter') {
+        await this.getServiceClassCharterList()
+      } else {
+        await this.getServiceClassTransferList()
+      }
+    }
+  },
   async created () {
-    await this.getServiceClassList()
+    await this.getServiceClassTransferList()
   },
   methods: {
     ...mapActions({
-      getServiceClassList: 'serviceClass/getServiceClassList'
+      getServiceClassTransferList: 'serviceClass/getServiceClassTransferList',
+      getServiceClassCharterList: 'serviceClass/getServiceClassCharterList'
     }),
     closeModal () {
       this.$emit('closeModal')

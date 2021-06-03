@@ -1,5 +1,5 @@
 <template>
-  <div ref="home">
+  <div v-if="serviceList.length" ref="home">
     <v-toolbar
       flat
       light
@@ -68,13 +68,15 @@
         </v-layout>
         <v-layout justify-space-between>
           <v-card v-for="service in serviceList" :key="service.index" width="350" light flat>
-            <div>
-              <v-img :src="service.image" />
-            </div>
+            <v-layout justify-center>
+              <div>
+                <v-img width="150" :src="service.ASIMGUrl" />
+              </div>
+            </v-layout>
             <v-card-text class="px-0">
-              <span class="font-weight-bold black--text fs-18">{{ service.title }}</span>
+              <span class="font-weight-bold black--text fs-18">{{ service.ASCaption }}</span>
               <p class="fs-14">
-                {{ service.details }}
+                {{ service.ASDesc }}
               </p>
               <a
                 to="service.link"

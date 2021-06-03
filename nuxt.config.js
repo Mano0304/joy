@@ -8,8 +8,8 @@ export default {
   },
 
   head: {
-    titleTemplate: '%s - joy',
-    title: 'joy',
+    titleTemplate: '%s - JOYREPUBLIC',
+    title: 'Home',
     htmlAttrs: {
       lang: 'en'
     },
